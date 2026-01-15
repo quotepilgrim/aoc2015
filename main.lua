@@ -1,11 +1,14 @@
 local day
 local part
-local filename = "inputs/test.txt"
+local filename
 
 while #arg > 0 do
 	local a = table.remove(arg, 1)
 	if string.sub(a, 1, 2) == "-d" then
 		day = require(a:sub(2, #a))
+		if not filename then
+			filename = "inputs/" .. a:sub(2, #a) .. ".txt"
+		end
 	elseif string.sub(a, 1, 2) == "-p" then
 		part = a:sub(3, #a)
 	elseif a == "-f" then
