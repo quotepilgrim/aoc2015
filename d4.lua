@@ -8,15 +8,12 @@ local function p1(data, p2)
 	while true do
 		local str = data .. tostring(i)
 		local hash = love.data.encode("string", "hex", love.data.hash("md5", str))
-		local found
-		if p2 then
-			found = hash:sub(1, 6) == "000000"
-		else
-			found = hash:sub(1, 5) == "00000"
-		end
-		if found then
-			print(hash)
-			return i
+		if hash:sub(1, 5) == "00000" then
+			if not p2 then
+				return i
+			elseif hash:sub(6, 6) == "0" then
+				return i
+			end
 		end
 		i = i + 1
 	end
