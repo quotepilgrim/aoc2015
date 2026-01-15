@@ -1,8 +1,6 @@
 local t = {}
 local result
 
-local dump = require("lib.dump")
-
 local function p1(data)
 	local result = 0
 	for _, box in ipairs(data) do
@@ -25,7 +23,24 @@ local function p1(data)
 end
 
 local function p2(data)
-	dump(data)
+	local result = 0
+	for _, box in ipairs(data) do
+		local sides = {}
+		for i = 1, #box do
+			for j = i + 1, #box do
+				table.insert(sides, (box[i] + box[j]) * 2)
+			end
+		end
+
+		local smallest = math.min(unpack(sides))
+		local bow = 1
+		for _, n in ipairs(box) do
+			bow = bow * n
+		end
+
+		result = result + smallest + bow
+	end
+	return result
 end
 
 function t.load(part, filename)
