@@ -15,7 +15,7 @@ end
 
 function love.load()
 	love.graphics.setFont(love.graphics.newFont(24))
-	local result = day.load(part or 1, filename)
+	local result = day.load(part or "1", filename)
 
 	if result then
 		love.system.setClipboardText(result)
