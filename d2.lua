@@ -1,8 +1,22 @@
 local t = {}
-local result
 
-local function p1(data)
+local function load_data(file)
+	local data = {}
+
+	for line in file:lines() do
+		local row = {}
+		local matches = line:gmatch("[^x]+")
+		for match in matches do
+			table.insert(row, match)
+		end
+		table.insert(data, row)
+	end
+	return data
+end
+
+t["1"] = function(file)
 	local result = 0
+	local data = load_data(file)
 	for _, box in ipairs(data) do
 		local sides = {}
 		for i = 1, #box do
@@ -22,8 +36,9 @@ local function p1(data)
 	return result
 end
 
-local function p2(data)
+t["2"] = function(file)
 	local result = 0
+	local data = load_data(file)
 	for _, box in ipairs(data) do
 		local sides = {}
 		for i = 1, #box do
@@ -41,32 +56,6 @@ local function p2(data)
 		result = result + smallest + bow
 	end
 	return result
-end
-
-function t.load(part, filename)
-	local file = assert(io.open(filename))
-	local data = {}
-
-	for line in file:lines() do
-		local row = {}
-		local matches = line:gmatch("[^x]+")
-		for match in matches do
-			table.insert(row, match)
-		end
-		table.insert(data, row)
-	end
-
-	if part == "1" then
-		result = p1(data)
-	elseif part == "2" then
-		result = p2(data)
-	end
-
-	return result
-end
-
-function t.draw()
-	love.graphics.print(result or "")
 end
 
 return t

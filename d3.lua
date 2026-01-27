@@ -1,7 +1,13 @@
 local t = {}
-local result
 
-local function p1(data)
+local function load_data(file)
+	local data = file:read()
+	file:close()
+	return data
+end
+
+t["1"] = function(file)
+	local data = load_data(file)
 	local x, y = 0, 0
 	local locations = {}
 
@@ -30,7 +36,8 @@ local function p1(data)
 	return result
 end
 
-local function p2(data)
+t["2"] = function(file)
+	local data = load_data(file)
 	local x, y, rx, ry = 0, 0, 0, 0
 	local locations = {}
 	local moves = {
@@ -60,23 +67,6 @@ local function p2(data)
 		end
 	end
 	return result
-end
-
-function t.load(part, filename)
-	local file = assert(io.open(filename))
-	local data = file:read()
-
-	if part == "1" then
-		result = p1(data)
-	elseif part == "2" then
-		result = p2(data)
-	end
-
-	return result
-end
-
-function t.draw()
-	love.graphics.print(result or "")
 end
 
 return t

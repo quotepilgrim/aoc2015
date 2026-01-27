@@ -1,9 +1,10 @@
 ---@diagnostic disable: param-type-mismatch
 
 local t = {}
-local result
 
-local function p1(data, p2)
+t["1"] = function(file, p2)
+	local data = file:read()
+	file:close()
 	local i = 0
 	while true do
 		local str = data .. tostring(i)
@@ -19,20 +20,8 @@ local function p1(data, p2)
 	end
 end
 
-function t.load(part, filename)
-	local data = "yzbqklnj"
-
-	if part == "1" then
-		result = p1(data)
-	elseif part == "2" then
-		result = p1(data, true)
-	end
-
-	return result
-end
-
-function t.draw()
-	love.graphics.print(result or "")
+t["2"] = function(file)
+	return t["1"](file, true)
 end
 
 return t

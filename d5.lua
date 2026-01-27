@@ -1,7 +1,17 @@
 local t = {}
-local result
 
-local function p1(data)
+local function load_data(file)
+	local data = {}
+
+	for line in file:lines() do
+		table.insert(data, line)
+	end
+
+	return data
+end
+
+t["1"] = function(file)
+	local data = load_data(file)
 	local invalid_pairs = { "ab", "cd", "pq", "xy" }
 	local function is_valid(word)
 		for _, v in ipairs(invalid_pairs) do
@@ -33,7 +43,8 @@ local function p1(data)
 	return result
 end
 
-local function p2(data)
+t["2"] = function(file)
+	local data = load_data(file)
 	local function is_valid(word)
 		local doubles = false
 		local repeats = false
@@ -58,27 +69,6 @@ local function p2(data)
 		end
 	end
 	return result
-end
-
-function t.load(part, filename)
-	local file = assert(io.open(filename))
-	local data = {}
-
-	for line in file:lines() do
-		table.insert(data, line)
-	end
-
-	if part == "1" then
-		result = p1(data)
-	elseif part == "2" then
-		result = p2(data)
-	end
-
-	return result
-end
-
-function t.draw()
-	love.graphics.print(result or "")
 end
 
 return t
