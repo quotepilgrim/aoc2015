@@ -3,7 +3,7 @@ local M = {}
 local function load_data(file)
 	local data = {}
 	for line in file:lines() do
-		local a, b = string.match(line, "(.+)%s%->%s(.*)")
+		local a, b = string.match(line, "(.+)%s%->%s(.+)")
 		data[b] = tonumber(a) or a
 	end
 	file:close()

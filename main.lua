@@ -27,8 +27,11 @@ function love.load()
 	local file = assert(io.open(filename))
 	love.graphics.setFont(love.graphics.newFont(24))
 
-	result = day[part or "1"](file)
+	if day.load then
+		day.load()
+	end
 
+	result = day[part or "1"](file)
 	if result then
 		love.system.setClipboardText(result)
 	end
@@ -38,7 +41,7 @@ if day.draw then
 	love.draw = day.draw
 else
 	function love.draw()
-		love.graphics.print(result or "", 16, 16)
+		love.graphics.print(result or "", 8, 8)
 	end
 end
 
