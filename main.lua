@@ -1,7 +1,5 @@
-local day
-local part
-local filename
-local result
+local day, part, filename, result
+local rx, ry, rw, rh, dx, dy, ww, wh
 
 while #arg > 0 do
 	local a = table.remove(arg, 1)
@@ -23,16 +21,30 @@ while #arg > 0 do
 	end
 end
 
+local function random_sign()
+	return math.random() > 0.5 and 1 or -1
+end
+
 function love.load()
 	local file = assert(io.open(filename))
+
 	love.graphics.setFont(love.graphics.newFont(24))
+	math.randomseed(os.time())
 
 	if day.load then
 		day.load()
 	end
+	result = day[part or "1"](file) or ""
 
-	result = day[part or "1"](file)
-	if result then
+	ww, wh = love.window.getMode()
+	rw = love.graphics.getFont():getWidth(result)
+	rh = love.graphics.getFont():getHeight()
+	rx = math.random(ww - rw)
+	ry = math.random(wh - rh)
+	dx = math.random(50, 100) * random_sign()
+	dy = math.random(50, 100) * random_sign()
+
+	if result ~= "" then
 		love.system.setClipboardText(result)
 	end
 end
@@ -41,12 +53,23 @@ if day.draw then
 	love.draw = day.draw
 else
 	function love.draw()
-		love.graphics.print(result or "", 8, 8)
+		love.graphics.print(result, rx, ry)
 	end
 end
 
 if day.update then
 	love.update = day.update
+else
+	function love.update(dt)
+		rx = rx + dx * dt
+		ry = ry + dy * dt
+		if rx + rw > ww or rx < 0 then
+			dx = -dx
+		end
+		if ry + rh > wh or ry < 0 then
+			dy = -dy
+		end
+	end
 end
 
 function love.keypressed(key)

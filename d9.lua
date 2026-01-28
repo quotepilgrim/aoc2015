@@ -7,7 +7,6 @@ local data = {}
 
 function M.load()
 	love.window.setMode(400, 400)
-	math.randomseed(os.time())
 end
 
 M["1"] = function(file)
