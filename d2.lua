@@ -1,4 +1,4 @@
-local t = {}
+local M = {}
 
 local function load_data(file)
 	local data = {}
@@ -14,7 +14,7 @@ local function load_data(file)
 	return data
 end
 
-t["1"] = function(file)
+M["1"] = function(file)
 	local result = 0
 	local data = load_data(file)
 	for _, box in ipairs(data) do
@@ -36,7 +36,7 @@ t["1"] = function(file)
 	return result
 end
 
-t["2"] = function(file)
+M["2"] = function(file)
 	local result = 0
 	local data = load_data(file)
 	for _, box in ipairs(data) do
@@ -58,4 +58,4 @@ t["2"] = function(file)
 	return result
 end
 
-return t
+return M

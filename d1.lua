@@ -1,6 +1,6 @@
-local t = {}
+local M = {}
 
-t["1"] = function(file, p2)
+M["1"] = function(file, p2)
 	local result = 0
 	local data = file:read()
 	file:close()
@@ -20,8 +20,8 @@ t["1"] = function(file, p2)
 	return result
 end
 
-t["2"] = function(file)
-	return t["1"](file, true)
+M["2"] = function(file)
+	return M["1"](file, true)
 end
 
-return t
+return M

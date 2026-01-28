@@ -1,8 +1,8 @@
 ---@diagnostic disable: param-type-mismatch
 
-local t = {}
+local M = {}
 
-t["1"] = function(file, p2)
+M["1"] = function(file, p2)
 	local data = file:read()
 	file:close()
 	local i = 0
@@ -20,8 +20,8 @@ t["1"] = function(file, p2)
 	end
 end
 
-t["2"] = function(file)
-	return t["1"](file, true)
+M["2"] = function(file)
+	return M["1"](file, true)
 end
 
-return t
+return M

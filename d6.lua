@@ -1,4 +1,4 @@
-local t = {}
+local M = {}
 local grid = {}
 
 for i = 1, 1000 do
@@ -20,7 +20,7 @@ local function load_data(file)
 	return data
 end
 
-t["1"] = function(file)
+M["1"] = function(file)
 	local data = load_data(file)
 	for _, tbl in ipairs(data) do
 		local rule, a1, a2, b1, b2 = unpack(tbl)
@@ -50,7 +50,7 @@ t["1"] = function(file)
 	return result
 end
 
-t["2"] = function(file)
+M["2"] = function(file)
 	local data = load_data(file)
 	for _, tbl in ipairs(data) do
 		local rule, a1, a2, b1, b2 = unpack(tbl)
@@ -80,4 +80,4 @@ t["2"] = function(file)
 	return result
 end
 
-return t
+return M

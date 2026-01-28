@@ -1,4 +1,4 @@
-local t = {}
+local M = {}
 
 local function load_data(file)
 	local data = {}
@@ -44,7 +44,7 @@ local function solve_wire(data, wire)
 	return data[wire]
 end
 
-t["1"] = function(file)
+M["1"] = function(file)
 	local data = load_data(file)
 
 	for k, _ in pairs(data) do
@@ -54,7 +54,7 @@ t["1"] = function(file)
 	return data.a
 end
 
-t["2"] = function(file)
+M["2"] = function(file)
 	local data = load_data(file)
 	local data2 = {}
 
@@ -75,4 +75,4 @@ t["2"] = function(file)
 	return data2.a
 end
 
-return t
+return M

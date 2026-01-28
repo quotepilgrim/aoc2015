@@ -1,4 +1,4 @@
-local t = {}
+local M = {}
 
 local function load_data(file)
 	local data = {}
@@ -10,7 +10,7 @@ local function load_data(file)
 	return data
 end
 
-t["1"] = function(file)
+M["1"] = function(file)
 	local data = load_data(file)
 	local invalid_pairs = { "ab", "cd", "pq", "xy" }
 	local function is_valid(word)
@@ -43,7 +43,7 @@ t["1"] = function(file)
 	return result
 end
 
-t["2"] = function(file)
+M["2"] = function(file)
 	local data = load_data(file)
 	local function is_valid(word)
 		local doubles = false
@@ -71,4 +71,4 @@ t["2"] = function(file)
 	return result
 end
 
-return t
+return M
