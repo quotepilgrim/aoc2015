@@ -14,7 +14,7 @@ while #arg > 0 do
 		local d = "d" .. (v or table.remove(arg, 1))
 		day = require(d)
 		if not filename then
-			filename = "inputs/" .. d:sub(1, #a) .. ".txt"
+			filename = "inputs/" .. d .. ".txt"
 		end
 	elseif a == "-p" then
 		part = v or table.remove(arg, 1)

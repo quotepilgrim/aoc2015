@@ -1,6 +1,7 @@
 local M = {}
 local min_distance = 0x7FFFFFFF
 local max_distance = 0
+local frequency = 1000
 local locations = {}
 local data = {}
 
@@ -52,21 +53,23 @@ local function get_distance(t)
 end
 
 function M.update()
-	shuffle(locations)
-	local dist = get_distance(locations)
-	if dist < min_distance then
-		min_distance = dist
-	end
-	if dist > max_distance then
-		max_distance = dist
+	for _ = 1, frequency do
+		shuffle(locations)
+		local dist = get_distance(locations)
+		if dist < min_distance then
+			min_distance = dist
+		end
+		if dist > max_distance then
+			max_distance = dist
+		end
 	end
 end
 
 function M.draw()
 	love.graphics.print(tostring(min_distance), 8, 8)
-	love.graphics.print(tostring(max_distance), 8, 32)
+	love.graphics.print(tostring(max_distance), 8, 40)
 	love.graphics.setColor(1, 1, 1, 0.5)
-	love.graphics.print(table.concat(locations, "\n"), 8, 64)
+	love.graphics.print(table.concat(locations, "\n"), 8, 72)
 	love.graphics.setColor(1, 1, 1, 1)
 end
 
