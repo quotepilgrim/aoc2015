@@ -6,6 +6,7 @@ local function load_data(file)
 		local a, b = string.match(line, "(.+)%s%->%s(.*)")
 		data[b] = tonumber(a) or a
 	end
+	file:close()
 	return data
 end
 
@@ -45,10 +46,33 @@ end
 
 t["1"] = function(file)
 	local data = load_data(file)
+
 	for k, _ in pairs(data) do
 		solve_wire(data, k)
 	end
+
 	return data.a
+end
+
+t["2"] = function(file)
+	local data = load_data(file)
+	local data2 = {}
+
+	for k, v in pairs(data) do
+		data2[k] = v
+	end
+
+	for k, _ in pairs(data) do
+		solve_wire(data, k)
+	end
+
+	data2.b = data.a
+
+	for k, _ in pairs(data2) do
+		solve_wire(data2, k)
+	end
+
+	return data2.a
 end
 
 return t
