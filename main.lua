@@ -57,11 +57,11 @@ love.update = day.update
 		ry = ry + dy * dt
 		if rx + rw > ww or rx < 0 then
 			dx = -dx
-			rx = math.min(math.max(0, rx), ww)
+			rx = math.min(math.max(0, rx), ww - rw)
 		end
 		if ry + rh > wh or ry < 0 then
 			dy = -dy
-			ry = math.min(math.max(0, ry), wh)
+			ry = math.min(math.max(0, ry), wh - rh)
 		end
 	end
 
@@ -76,4 +76,9 @@ function love.keypressed(key)
 	if day.keypressed then
 		return day.keypressed(key)
 	end
+end
+
+function love.resize(w, h)
+	ww = w
+	wh = h
 end
