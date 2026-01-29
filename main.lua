@@ -8,6 +8,7 @@ while #arg > 0 do
 	if a:sub(1, 1) == "-" then
 		if #a > 2 then
 			v = a:sub(3, #a)
+			a = a:sub(1, 2)
 		else
 			if not arg[1] or arg[1]:sub(1, 1) == "-" then
 				v = true
@@ -15,7 +16,7 @@ while #arg > 0 do
 				v = table.remove(arg, 1)
 			end
 		end
-		a = #a >= 2 and a:sub(2, 2) or "_"
+		a = a:sub(#a, #a)
 		argv[a] = v
 	end
 end
