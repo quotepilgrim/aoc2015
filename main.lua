@@ -9,9 +9,10 @@ while #arg > 0 do
 		if #a > 2 then
 			v = a:sub(3, #a)
 		else
-			v = arg[1]
-			if not v or v:sub(1, 1) == "-" then
+			if not arg[1] or arg[1]:sub(1, 1) == "-" then
 				v = true
+			else
+				v = table.remove(arg, 1)
 			end
 		end
 		a = #a >= 2 and a:sub(2, 2) or "_"
@@ -21,7 +22,7 @@ end
 
 filename = argv.f or ("inputs/d" .. argv.d .. ".txt")
 day = require("d" .. argv.d)
-part = argv.p
+part = argv.p or "1"
 
 local function random_sign()
 	return math.random() > 0.5 and 1 or -1
@@ -30,13 +31,14 @@ end
 function love.load()
 	local file = assert(io.open(filename))
 
+	love.window.setTitle(love.window.getTitle() .. " - Day " .. argv.d .. " Part " .. part)
 	love.graphics.setFont(love.graphics.newFont(24))
 	math.randomseed(os.time())
 
 	if day.load then
 		day.load(argv)
 	end
-	result = day[part or "1"](file) or ""
+	result = day[part](file) or ""
 
 	ww, wh = love.window.getMode()
 	rw = love.graphics.getFont():getWidth(result)

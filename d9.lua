@@ -3,11 +3,11 @@ local min_distance = 0x7FFFFFFF
 local max_distance = 0
 local locations = {}
 local data = {}
-local freq
+local rate
 
 function M.load(argv)
-	love.window.setMode(400, 400)
-	freq = tonumber(argv.r) or 1000
+	love.window.setMode(400, 400, { resizable = true })
+	rate = tonumber(argv.r) or 1000
 end
 
 M["1"] = function(file)
@@ -53,7 +53,7 @@ local function get_distance(t)
 end
 
 function M.update()
-	for _ = 1, freq do
+	for _ = 1, rate do
 		shuffle(locations)
 		local dist = get_distance(locations)
 		if dist < min_distance then
