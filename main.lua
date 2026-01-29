@@ -15,8 +15,8 @@ while #arg > 0 do
 			end
 		end
 		a = #a >= 2 and a:sub(2, 2) or "_"
+		argv[a] = v
 	end
-	argv[a] = v
 end
 
 filename = argv.f or ("inputs/d" .. argv.d .. ".txt")
