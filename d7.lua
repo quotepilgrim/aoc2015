@@ -30,7 +30,7 @@ local function solve_wire(data, wire)
 	if splits[2] == "AND" then
 		data[wire] = bit.band(solve_wire(data, splits[1]), solve_wire(data, splits[3]))
 	elseif splits[2] == "OR" then
-		data[wire] = bit.band(bit.bor(solve_wire(data, splits[1]), solve_wire(data, splits[3])), 0xFFFF)
+		data[wire] = bit.bor(solve_wire(data, splits[1]), solve_wire(data, splits[3]))
 	elseif splits[1] == "NOT" then
 		data[wire] = bit.band(bit.bnot(solve_wire(data, splits[2])), 0xFFFF)
 	elseif splits[2] == "LSHIFT" then
