@@ -69,8 +69,9 @@ M["1"] = function(file)
 end
 
 M["2"] = function(file)
-	local data = M["1"](file)
-	return solve(data)
+	local data = file:read()
+	file:close()
+	return solve(solve(data))
 end
 
 return M
