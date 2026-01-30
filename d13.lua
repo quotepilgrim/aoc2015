@@ -56,6 +56,7 @@ M["1"] = function(file)
 end
 
 M["2"] = function(file)
+	load_data(file)
 	local me = "Pilgrim"
 
 	data[me] = {}
