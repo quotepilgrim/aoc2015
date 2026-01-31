@@ -44,15 +44,12 @@ M["1"] = function(file, require_500)
 
 	local result = 0
 	for p1 = 0, 100 do
-		for p2 = 0, 100 do
-			for p3 = 0, 100 do
-				local points = { p1, p2, p3 }
-				table.sort(points)
-
-				local a = points[1]
-				local b = points[2] - points[1]
-				local c = points[3] - points[2]
-				local d = 100 - points[3]
+		for p2 = p1, 100 do
+			for p3 = p2, 100 do
+				local a = p1
+				local b = p2 - p1
+				local c = p3 - p2
+				local d = 100 - p3
 
 				local score = get_score(data, a, b, c, d, require_500)
 				result = score > result and score or result
