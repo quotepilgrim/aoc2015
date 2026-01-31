@@ -5,18 +5,31 @@ local argv = {}
 while #arg > 0 do
 	local a = table.remove(arg, 1)
 	local v
-	if a:sub(1, 1) == "-" then
-		if #a > 2 then
-			v = a:sub(3, #a)
-			a = a:sub(1, 2)
+	local short = a:sub(1, 1) == "-"
+	local long = short and a:sub(2, 2) == "-"
+	if long then
+		local split = a:find("=")
+		if split then
+			v = a:sub(split + 1)
+			a = a:sub(3, split - 1)
 		else
+			a = a:sub(3)
+		end
+	elseif short then
+		if #a > 2 then
+			v = a:sub(3)
+			a = a:sub(1, 2)
+		end
+		a = a:sub(-1, -1)
+	end
+	if long or short then
+		if not v then
 			if not arg[1] or arg[1]:sub(1, 1) == "-" then
 				v = true
 			else
-				v = table.remove(arg, 1)
+				v = table.remove(arg, 1) or true
 			end
 		end
-		a = a:sub(#a, #a)
 		argv[a] = v
 	end
 end
