@@ -13,19 +13,22 @@ local function load_data(file)
 		table.insert(data, { ingredient = i, capacity = c, durability = d, flavor = f, texture = t, calories = k })
 	end
 
-	data[3] = data[3] or { capacity = 0, durability = 0, flavor = 0, texture = 0, calories = 0 }
-	data[4] = data[4] or data[3]
-
 	file:close()
 	return data
 end
 
 local function get_score(data, a, b, c, d, require_500)
-	local capacity = data[1].capacity * a + data[2].capacity * b + data[3].capacity * c + data[4].capacity * d
-	local durability = data[1].durability * a + data[2].durability * b + data[3].durability * c + data[4].durability * d
-	local flavor = data[1].flavor * a + data[2].flavor * b + data[3].flavor * c + data[4].flavor * d
-	local texture = data[1].texture * a + data[2].texture * b + data[3].texture * c + data[4].texture * d
-	local calories = data[1].calories * a + data[2].calories * b + data[3].calories * c + data[4].calories * d
+	local capacity, durability, flavor, texture, calories = 0, 0, 0, 0, 0
+	for i, v in ipairs({ a, b, c, d }) do
+		if not data[i] then
+			break
+		end
+		capacity = capacity + data[i].capacity * v
+		durability = durability + data[i].durability * v
+		flavor = flavor + data[i].flavor * v
+		texture = texture + data[i].texture * v
+		calories = calories + data[i].calories * v
+	end
 
 	if require_500 and calories ~= 500 then
 		return 0
