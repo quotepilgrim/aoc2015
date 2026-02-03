@@ -52,7 +52,7 @@ function love.load()
 	if day.load then
 		day.load(argv)
 	end
-	result = day[part](file) or ""
+	result = day[part] and day[part](file) or ""
 
 	ww, wh = love.window.getMode()
 	rw = love.graphics.getFont():getWidth(result)
