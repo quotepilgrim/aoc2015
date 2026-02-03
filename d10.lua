@@ -3,16 +3,16 @@ local CONWAY = 1.303577269034
 
 local function look_say(s)
 	local count = 1
-	local result = ""
+	local result = {}
 	for i = 1, #s do
 		if s:sub(i + 1, i + 1) == s:sub(i, i) then
 			count = count + 1
 		else
-			result = result .. count .. s:sub(i, i)
+			table.insert(result, count .. s:sub(i, i))
 			count = 1
 		end
 	end
-	return result
+	return table.concat(result)
 end
 
 M["1"] = function(file, p2)
@@ -29,13 +29,7 @@ M["1"] = function(file, p2)
 	return #data
 end
 
-M["2"] = function()
-	print("Please use -p2a or -p2b.")
-	love.event.quit()
-end
-
-M["2a"] = function(file)
-	--run naïve solution; extremely slow
+M["2"] = function(file)
 	return M["1"](file, true)
 end
 
