@@ -33,9 +33,4 @@ M["2"] = function(file)
 	return M["1"](file, true)
 end
 
-M["2b"] = function(file)
-	--attempt at a smarter solution; doesn't actually work but gets very close
-	return math.floor(M["1"](file) * CONWAY ^ 10)
-end
-
 return M

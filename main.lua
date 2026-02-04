@@ -39,7 +39,7 @@ day = require("d" .. argv.d)
 part = argv.p or "1"
 
 local function random_sign()
-	return math.random() > 0.5 and 1 or -1
+	return love.math.random() > 0.5 and 1 or -1
 end
 
 function love.load()
@@ -47,20 +47,20 @@ function love.load()
 
 	love.window.setTitle(love.window.getTitle() .. " - Day " .. argv.d .. " Part " .. part)
 	love.graphics.setFont(love.graphics.newFont(24))
-	math.randomseed(os.time())
 
 	if day.load then
 		day.load(argv)
 	end
+
 	result = day[part] and day[part](file) or ""
 
 	ww, wh = love.window.getMode()
 	rw = love.graphics.getFont():getWidth(result)
 	rh = love.graphics.getFont():getHeight()
-	rx = math.random(0, ww - rw)
-	ry = math.random(0, wh - rh)
-	dx = math.random(50, 100) * random_sign()
-	dy = math.random(50, 100) * random_sign()
+	rx = love.math.random(0, ww - rw)
+	ry = love.math.random(0, wh - rh)
+	dx = love.math.random(50, 100) * random_sign()
+	dy = love.math.random(50, 100) * random_sign()
 
 	if result ~= "" then
 		love.system.setClipboardText(result)

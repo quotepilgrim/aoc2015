@@ -2,15 +2,18 @@ local M = {}
 
 local function load_data(file)
 	local data = {}
+
 	for line in file:lines() do
 		table.insert(data, { filled = false, capacity = tonumber(line) })
 	end
+
 	file:close()
 	return data
 end
 
 local function increment(t)
 	local place = #t
+
 	while place > 0 do
 		t[place].filled = not t[place].filled
 		if t[place].filled then
@@ -18,6 +21,7 @@ local function increment(t)
 		end
 		place = place - 1
 	end
+
 	return false
 end
 
@@ -49,7 +53,7 @@ end
 M["2"] = function(file)
 	local data = load_data(file)
 	local result = 0
-	local minimum = 0x7fffffff
+	local minimum = math.huge
 
 	while increment(data) do
 		local sum, filled = get_sum(data)

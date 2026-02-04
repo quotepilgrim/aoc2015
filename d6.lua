@@ -17,6 +17,8 @@ local function load_data(file)
 		end
 		table.insert(data, row)
 	end
+
+	file:close()
 	return data
 end
 

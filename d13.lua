@@ -1,6 +1,7 @@
 local M = {}
 local data = {}
 local people = {}
+local random = love.math.random
 
 local function load_data(file)
 	local seen = {}
@@ -20,16 +21,16 @@ end
 
 local function shuffle(t)
 	for i = #t, 2, -1 do
-		local j = math.random(i)
+		local j = random(i)
 		t[i], t[j] = t[j], t[i]
 	end
 end
 
-local function get_sum(people)
+local function get_sum(t)
 	local result = 0
-	local fp, lp = people[1], people[#people]
-	for i = 1, #people - 1 do
-		local p1, p2 = people[i], people[i + 1]
+	local fp, lp = t[1], t[#t]
+	for i = 1, #t - 1 do
+		local p1, p2 = t[i], t[i + 1]
 		result = result + data[p1][p2]
 		result = result + data[p2][p1]
 	end

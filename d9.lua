@@ -1,5 +1,6 @@
 local M = {}
-local min_distance = 0x7FFFFFFF
+local random = love.math.random
+local min_distance = math.huge
 local max_distance = 0
 local locations = {}
 local data = {}
@@ -33,13 +34,9 @@ M["1"] = function(file)
 	file:close()
 end
 
-M["2"] = function()
-	love.event.quit()
-end
-
 local function shuffle(t)
 	for i = #t, 2, -1 do
-		local j = math.random(i)
+		local j = random(i)
 		t[i], t[j] = t[j], t[i]
 	end
 end

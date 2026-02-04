@@ -7,6 +7,7 @@ local function load_data(file)
 		table.insert(data, line)
 	end
 
+	file:close()
 	return data
 end
 
