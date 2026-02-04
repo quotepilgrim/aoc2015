@@ -43,7 +43,7 @@ local function random_sign()
 end
 
 function love.load()
-	local file = assert(io.open(filename))
+	local file = not argv.nofile and assert(io.open(filename))
 
 	love.window.setTitle(love.window.getTitle() .. " - Day " .. argv.d .. " Part " .. part)
 	love.graphics.setFont(love.graphics.newFont(24))

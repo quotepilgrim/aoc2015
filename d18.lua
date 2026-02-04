@@ -4,7 +4,7 @@ local grid = {}
 local temp = {}
 local w, h = 8, 8
 local total = 0
-local p2
+local p2, randomize
 
 local neighbors = {
 	{ -1, -1 },
@@ -17,7 +17,7 @@ local neighbors = {
 	{ 1, 1 },
 }
 
-M.load = function(argv)
+M.load = function()
 	love.window.setMode(w * 100, h * 100)
 end
 
@@ -33,6 +33,17 @@ local function load_data(file)
 		end
 		table.insert(grid, row)
 		table.insert(temp, {})
+	end
+	file:close()
+end
+
+local function random_grid()
+	for i = 1, 100 do
+		grid[i] = {}
+		temp[i] = {}
+		for j = 1, 100 do
+			grid[i][j] = love.math.random() > 0.5
+		end
 	end
 end
 
@@ -94,22 +105,34 @@ M.update = function(dt)
 	end
 
 	count = count + 1
-	if count == 100 then
+	if count == 100 and not randomize then
 		for _, t in ipairs(grid) do
 			for _, v in ipairs(t) do
 				total = v and total + 1 or total
 			end
 		end
 		print(total)
+		love.system.setClipboardText(total)
+	end
+end
+
+M.keypressed = function(key)
+	if randomize and key == "space" then
+		random_grid()
 	end
 end
 
 M["1"] = function(file)
-	load_data(file)
+	if not file then
+		randomize = true
+		random_grid()
+	else
+		load_data(file)
+	end
 end
 
 M["2"] = function(file)
-	load_data(file)
+	M["1"](file)
 	stuck()
 	p2 = true
 end
