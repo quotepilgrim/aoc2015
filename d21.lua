@@ -16,6 +16,7 @@ shop.armor = {
 	{ "Splintmail", 53, 0, 3 },
 	{ "Bandedmail", 75, 0, 4 },
 	{ "Platemail", 102, 0, 5 },
+	{ "", 0, 0, 0 },
 }
 
 shop.rings = {
@@ -42,6 +43,7 @@ end
 
 local function do_battle(player, boss)
 	local turn = 1
+
 	while player.hp > 0 and boss.hp > 0 do
 		local p_dmg = math.max(player.dmg - boss.def, 1)
 		local b_dmg = math.max(boss.dmg - player.def, 1)
@@ -56,10 +58,10 @@ local function do_battle(player, boss)
 	end
 end
 
-M["1"] = function(file)
-	local data = load_data(file)
+local function solve(data)
 	local player = {}
 
+	local max = 0
 	local min = math.huge
 	for _, weapon in ipairs(shop.weapons) do
 		for _, armor in ipairs(shop.armor) do
@@ -78,15 +80,28 @@ M["1"] = function(file)
 
 					do_battle(player, boss)
 
-					if player.hp > 0 and cost < min then
-						min = cost
+					if player.hp > 0 then
+						min = cost < min and cost or min
+					else
+						max = cost > max and cost or max
 					end
 				end
 			end
 		end
 	end
 
-	return min
+	return min, max
+end
+
+M["1"] = function(file)
+	local data = load_data(file)
+	return solve(data)
+end
+
+M["2"] = function(file)
+	local data = load_data(file)
+	local _, result = solve(data)
+	return result
 end
 
 return M
