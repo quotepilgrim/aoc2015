@@ -91,8 +91,8 @@ M["2"] = function(file)
 			end
 
 			unique = new_unique
-			::breakout::
 		end
+		::breakout::
 	end
 	return result
 end
