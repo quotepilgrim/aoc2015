@@ -65,9 +65,9 @@ local function solve(data)
 	local min = math.huge
 	for _, weapon in ipairs(shop.weapons) do
 		for _, armor in ipairs(shop.armor) do
-			for _, right in ipairs(shop.rings) do
-				for i = #right + 1, #shop.rings do
-					local left = shop.rings[i]
+			for i, right in ipairs(shop.rings) do
+				for j = i + 1, #shop.rings do
+					local left = shop.rings[j]
 					local cost = weapon[2]
 					cost = cost + armor[2]
 					cost = cost + left[2]
