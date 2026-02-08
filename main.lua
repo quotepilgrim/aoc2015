@@ -52,7 +52,13 @@ function love.load()
 		day.load(argv)
 	end
 
-	result = day[part] and day[part](file) or ""
+	result = day[part] and day[part](file)
+
+	if result then
+		love.system.setClipboardText(result)
+	else
+		result = "???"
+	end
 
 	ww, wh = love.window.getMode()
 	rw = love.graphics.getFont():getWidth(result)
@@ -61,10 +67,6 @@ function love.load()
 	ry = love.math.random(0, wh - rh)
 	dx = love.math.random(50, 100) * random_sign()
 	dy = love.math.random(50, 100) * random_sign()
-
-	if result ~= "" then
-		love.system.setClipboardText(result)
-	end
 end
 
 love.update = day.update
