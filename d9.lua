@@ -1,5 +1,5 @@
 local M = {}
-local random = love.math.random
+local shuffle = require("lib.shuffle")
 local min_distance = math.huge
 local max_distance = 0
 local locations = {}
@@ -32,13 +32,6 @@ M["1"] = function(file)
 		data[l2][l1] = tonumber(d)
 	end
 	file:close()
-end
-
-local function shuffle(t)
-	for i = #t, 2, -1 do
-		local j = random(i)
-		t[i], t[j] = t[j], t[i]
-	end
 end
 
 local function get_distance(t)

@@ -1,7 +1,7 @@
 local M = {}
 local data = {}
 local people = {}
-local random = love.math.random
+local shuffle = require("lib.shuffle")
 
 local function load_data(file)
 	local seen = {}
@@ -17,13 +17,6 @@ local function load_data(file)
 		end
 	end
 	file:close()
-end
-
-local function shuffle(t)
-	for i = #t, 2, -1 do
-		local j = random(i)
-		t[i], t[j] = t[j], t[i]
-	end
 end
 
 local function get_sum(t)

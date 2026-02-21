@@ -2,47 +2,46 @@ local day, part, filename, result
 local rx, ry, rw, rh, dx, dy, ww, wh
 local argv = {}
 
-while #arg > 0 do
-	local a = table.remove(arg, 1)
-	local v
-	local short = a:sub(1, 1) == "-"
-	local long = short and a:sub(2, 2) == "-"
-	if long then
-		local split = a:find("=")
-		if split then
-			v = a:sub(split + 1)
-			a = a:sub(3, split - 1)
-		else
-			a = a:sub(3)
-		end
-	elseif short then
-		if #a > 2 then
-			v = a:sub(3)
-			a = a:sub(1, 2)
-		end
-		a = a:sub(-1, -1)
-	end
-	if long or short then
-		if not v then
-			if not arg[1] or arg[1]:sub(1, 1) == "-" then
-				v = true
-			else
-				v = table.remove(arg, 1) or true
-			end
-		end
-		argv[a] = v
-	end
-end
-
-filename = argv.f or ("inputs/d" .. argv.d .. ".txt")
-day = require("d" .. argv.d)
-part = argv.p or "1"
-
 local function random_sign()
 	return love.math.random() > 0.5 and 1 or -1
 end
 
 function love.load()
+	while #arg > 0 do
+		local a = table.remove(arg, 1)
+		local v
+		local short = a:sub(1, 1) == "-"
+		local long = short and a:sub(2, 2) == "-"
+		if long then
+			local split = a:find("=")
+			if split then
+				v = a:sub(split + 1)
+				a = a:sub(3, split - 1)
+			else
+				a = a:sub(3)
+			end
+		elseif short then
+			if #a > 2 then
+				v = a:sub(3)
+				a = a:sub(1, 2)
+			end
+			a = a:sub(-1, -1)
+		end
+		if long or short then
+			if not v then
+				if not arg[1] or arg[1]:sub(1, 1) == "-" then
+					v = true
+				else
+					v = table.remove(arg, 1) or true
+				end
+			end
+			argv[a] = v
+		end
+	end
+
+	filename = argv.f or ("inputs/d" .. argv.d .. ".txt")
+	day = require("d" .. argv.d)
+	part = argv.p or "1"
 	local file = not argv.nofile and assert(io.open(filename))
 
 	love.window.setTitle(love.window.getTitle() .. " - Day " .. argv.d .. " Part " .. part)
@@ -50,6 +49,14 @@ function love.load()
 
 	if day.load then
 		day.load(argv)
+	end
+
+	if day.update then
+		love.update = day.update
+	end
+
+	if day.draw then
+		love.draw = day.draw
 	end
 
 	result = day[part] and day[part](file)
@@ -69,21 +76,20 @@ function love.load()
 	dy = love.math.random(50, 100) * random_sign()
 end
 
-love.update = day.update
-	or function(dt)
-		rx = rx + dx * dt
-		ry = ry + dy * dt
-		if rx + rw > ww or rx < 0 then
-			dx = -dx
-			rx = math.min(math.max(0, rx), ww - rw)
-		end
-		if ry + rh > wh or ry < 0 then
-			dy = -dy
-			ry = math.min(math.max(0, ry), wh - rh)
-		end
+function love.update(dt)
+	rx = rx + dx * dt
+	ry = ry + dy * dt
+	if rx + rw > ww or rx < 0 then
+		dx = -dx
+		rx = math.min(math.max(0, rx), ww - rw)
 	end
+	if ry + rh > wh or ry < 0 then
+		dy = -dy
+		ry = math.min(math.max(0, ry), wh - rh)
+	end
+end
 
-love.draw = day.draw or function()
+function love.draw()
 	love.graphics.print(result, rx, ry)
 end
 
