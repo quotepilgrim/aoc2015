@@ -1,5 +1,6 @@
 local M = {}
 local shuffle = require("lib.shuffle")
+local nextperm = require("lib.nextperm")
 local min_distance = math.huge
 local max_distance = 0
 local locations = {}
@@ -7,8 +8,13 @@ local data = {}
 local rate
 
 function M.load(argv)
-	love.window.setMode(400, 400, { resizable = true })
-	rate = tonumber(argv.r) or 1000
+	if argv.p and argv.p ~= "1" then
+		M.draw = nil
+		M.update = nil
+	else
+		love.window.setMode(400, 400, { resizable = true })
+		rate = tonumber(argv.r) or 1000
+	end
 end
 
 M["1"] = function(file)
@@ -69,6 +75,33 @@ function M.keypressed(key)
 	elseif key == "2" then
 		love.system.setClipboardText(tostring(max_distance))
 	end
+end
+
+-- Updated solution using the next lexicographical permutation algorithm.
+local function solve()
+	table.sort(locations)
+
+	repeat
+		local dist = get_distance(locations)
+		if dist < min_distance then
+			min_distance = dist
+		end
+		if dist > max_distance then
+			max_distance = dist
+		end
+	until not nextperm(locations)
+
+	return min_distance, max_distance
+end
+
+M["1a"] = function(file)
+	M["1"](file)
+	return solve()
+end
+
+M["2a"] = function(file)
+	M["1"](file)
+	return select(2, solve())
 end
 
 return M

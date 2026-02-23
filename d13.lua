@@ -2,6 +2,7 @@ local M = {}
 local data = {}
 local people = {}
 local shuffle = require("lib.shuffle")
+local nextperm = require("lib.nextperm")
 
 local function load_data(file)
 	local seen = {}
@@ -62,6 +63,39 @@ M["2"] = function(file)
 	end
 
 	return solve(50000)
+end
+
+-- Updated solution using the next lexicographical permutation algorithm.
+local function solve2()
+	local max = 0
+	table.sort(people)
+
+	repeat
+		local sum = get_sum(people)
+		max = sum > max and sum or max
+	until not nextperm(people)
+
+	return max
+end
+
+M["1a"] = function(file)
+	load_data(file)
+	return solve2()
+end
+
+M["2a"] = function(file)
+	load_data(file)
+	local me = "Q"
+
+	data[me] = {}
+	table.insert(people, me)
+
+	for _, person in ipairs(people) do
+		data[person][me] = 0
+		data[me][person] = 0
+	end
+
+	return solve2()
 end
 
 return M
