@@ -2,7 +2,6 @@ local M = {}
 local player = {}
 local boss = {}
 local random = love.math.random
-local test = false
 
 local function random_order(t)
 	for i = 1, 20 do
