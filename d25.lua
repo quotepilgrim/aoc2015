@@ -1,5 +1,4 @@
 local M = {}
-local first = 20151125
 
 local function load_data(file)
 	local a, b = file:read():match("(%d+)[^%d]+(%d+)")
@@ -14,7 +13,7 @@ end
 
 M["1"] = function(file)
 	local data = load_data(file)
-	local codes = { first }
+	local codes = { 20151125 }
 
 	for i = 1, data[1] * data[2] do
 		for j = i, 1, -1 do
