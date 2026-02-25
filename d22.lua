@@ -16,7 +16,7 @@ local function random_order(t)
 		return
 	end
 
-	for i = 1, 64 do
+	for i = 1, 24 do
 		t[i] = random(1, 5)
 	end
 
@@ -51,7 +51,7 @@ local spells = {
 	new_spell({ name = "recharge", cost = 229, recharge = 101, duration = 5 }),
 }
 
-M["1"] = function(file)
+M["1"] = function(file, hard)
 	local boss_hp = tonumber(file:read():match("%d+"))
 	boss.dmg = tonumber(file:read():match("%d+"))
 	local order = {}
@@ -71,14 +71,13 @@ M["1"] = function(file)
 
 	local min = math.huge
 
-	local count = 0
-	while true do
-		count = count + 1
+	for i = 1, 10000000 do
 		local mana_spent = 0
 
 		if test then
 			player.hp = 10
 			player.mp = 250
+			player.def = 0
 			boss.hp = 14
 			boss.dmg = 8
 		else
@@ -93,11 +92,15 @@ M["1"] = function(file)
 		random_order(order)
 		for _, v in ipairs(order) do
 			local spell = spells[v]
-			local can_use = (spell.cost <= player.mp) and (spell.timer == 0)
+			local can_use = (spell.cost <= player.mp) and (spell.timer <= 1)
 
 			if can_use then
 				if test then
 					print(player.hp, player.def, player.mp, boss.hp)
+				end
+
+				if hard then
+					player.hp = player.hp - 1
 				end
 
 				if player.hp <= 0 then
@@ -112,32 +115,39 @@ M["1"] = function(file)
 				player.hp = player.hp + spell.heal
 				boss.hp = boss.hp - spell.damage
 
-				if boss.hp <= 0 then
-					min = mana_spent < min and mana_spent or min
-					break
-				end
-
 				if test then
 					print(player.hp, player.def, player.mp, boss.hp)
 				end
 
 				apply_effects()
+
+				if boss.hp <= 0 then
+					min = mana_spent < min and mana_spent or min
+					break
+				end
+
 				player.hp = player.hp - (boss.dmg - player.def)
 
-				if player.mp < 53 then
+				if player.hp <= 0 or player.mp < 53 then
 					break
 				end
 			end
 		end
 
-		if count % 1000000 == 0 then
-			print(count / 1000000, min)
+		if i % 1000000 == 0 then
+			print(i / 1000000, min)
 		end
 
 		if test then
 			break
 		end
 	end
+
+	return min
+end
+
+M["2"] = function(file)
+	return M["1"](file, true)
 end
 
 return M
