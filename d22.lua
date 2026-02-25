@@ -4,19 +4,8 @@ local boss = {}
 local random = love.math.random
 local test = false
 
-function M.load(argv)
-	test = argv.test
-end
-
 local function random_order(t)
-	if test then
-		for i, v in ipairs({ 5, 3, 2, 4, 1 }) do
-			t[i] = v
-		end
-		return
-	end
-
-	for i = 1, 24 do
+	for i = 1, 20 do
 		t[i] = random(1, 5)
 	end
 
@@ -74,16 +63,8 @@ M["1"] = function(file, hard)
 	for i = 1, 10000000 do
 		local mana_spent = 0
 
-		if test then
-			player.hp = 10
-			player.mp = 250
-			player.def = 0
-			boss.hp = 14
-			boss.dmg = 8
-		else
-			player:reset()
-			boss.hp = boss_hp
-		end
+		player:reset()
+		boss.hp = boss_hp
 
 		for _, spell in ipairs(spells) do
 			spell.timer = 0
@@ -95,10 +76,6 @@ M["1"] = function(file, hard)
 			local can_use = (spell.cost <= player.mp) and (spell.timer <= 1)
 
 			if can_use then
-				if test then
-					print(player.hp, player.def, player.mp, boss.hp)
-				end
-
 				if hard then
 					player.hp = player.hp - 1
 				end
@@ -114,10 +91,6 @@ M["1"] = function(file, hard)
 				player.mp = player.mp - spell.cost
 				player.hp = player.hp + spell.heal
 				boss.hp = boss.hp - spell.damage
-
-				if test then
-					print(player.hp, player.def, player.mp, boss.hp)
-				end
 
 				apply_effects()
 
@@ -136,10 +109,6 @@ M["1"] = function(file, hard)
 
 		if i % 1000000 == 0 then
 			print(i / 1000000, min)
-		end
-
-		if test then
-			break
 		end
 	end
 
